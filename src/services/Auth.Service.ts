@@ -32,7 +32,8 @@ export default class AuthService {
   }
 
   async generateUserToken(user: User, expiry: string = '1d',  scope?: any): Promise<string> {
-    const token = jwt.sign({ i: user.id, type: user.role, scope  } as IJWTPayload, process.env.JWT_TOKEN, { expiresIn: expiry })
+    const token = jwt.sign({ i: user.id, type: user.role, scope  } as IJWTPayload, process.env.JWT_TOKEN, { expiresIn: expiry });
+    //console.log('token value:', token);
     return token;
   }
 

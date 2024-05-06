@@ -19,7 +19,7 @@ export const login = async (req: express.Request, res: express.Response, next: e
     const auth = new AuthService();
     const user = await auth.findUserByEmail(body.email);
     await auth.validateUserPassword(body.password, user.password);
-    console.log('User Details:',user);
+    //console.log('User Detailssssssssssssssssssssssssssss:',user);
     if (user.status !== STATUSES.ACTIVE) {
       throw new ErrorLib(`Cannot login, account is ${user.status}.`, 400)
     }

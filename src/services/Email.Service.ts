@@ -19,6 +19,7 @@ export default class EmailService {
       await transport.sendMail(message);
       LoggerLib.log('Email out - ', { ...data, user: this.user })
       return true;
+      //console.log(message);
     } catch(error) {
       LoggerLib.log(String(error))
       throw new BadRequest('Email service is down, pls contact admin.')
