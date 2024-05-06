@@ -15,9 +15,9 @@ export default class EmailService {
         subject: data.subject,
         html: data.html,
       };
-      LoggerLib.log('Email Service', { ...this.user })
+      //LoggerLib.log('Email Service', { ...this.user })
       await transport.sendMail(message);
-      LoggerLib.log('Email out - ', { ...data, user: this.user })
+      //LoggerLib.log('Email out - ', { ...data, user: this.user })
       return true;
       //console.log(message);
     } catch(error) {
