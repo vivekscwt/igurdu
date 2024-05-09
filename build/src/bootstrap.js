@@ -16,7 +16,7 @@ const datasource_config_1 = require("./db/datasource.config");
 const server_1 = __importDefault(require("./server"));
 function bootstrap() {
     return __awaiter(this, void 0, void 0, function* () {
-        process.env.TZ = 'UTC'; // check/set timezone as per business/tech requirement.
+        process.env.TIMEZONE = 'UTC'; // check/set timezone as per business/tech requirement.
         process.env.PORT = process.env.PORT || '80';
         process.env.APP_NAME = process.env.APP_NAME || 'APP';
         process.env.NODE_ENV = process.env.NODE_ENV || 'development';
