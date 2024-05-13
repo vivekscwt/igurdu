@@ -13,6 +13,7 @@ routes.post(
       first_name: Joi.string().optional(),
       last_name: Joi.string().optional(),
       phone: Joi.string().optional(),
+      country_code: Joi.string().optional(),
       professionalDetails: Joi.object({
         operation_type: Joi.string().allow(null, ''),
         trading_name: Joi.string().allow(null, ''),

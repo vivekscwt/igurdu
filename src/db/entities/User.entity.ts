@@ -18,6 +18,9 @@ export class User {
   'phone': string;
 
   @Column({ type: 'varchar', nullable: true })
+  'country_code': string;
+
+  @Column({ type: 'varchar', nullable: true })
   'email': string;
 
   @Column({ type: 'varchar', nullable: false })
