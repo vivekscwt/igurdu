@@ -1,0 +1,9 @@
+.idea
+.vscode
+node_modules
+*.log
+sandbox
+yarn.lock
+.DS_Store
+.DS_Store
+*.env
