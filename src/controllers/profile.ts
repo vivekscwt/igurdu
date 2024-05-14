@@ -12,25 +12,30 @@ import { ClientDataSource } from '../db/datasource.config';
 export const me = async (req: express.Request, res: express.Response, next: express.NextFunction) => { 
   try {
     const user = req.user; 
-    const firstUser = await ClientDataSource.query(`
+    const userData = await ClientDataSource.query(`
       SELECT 
-      users.id,
+      id,
       email,
       first_name,
       last_name,
       phone,
       country_code,
       status,
-      role,
-      documents.url AS document_url
+      role
       FROM users 
-      LEFT JOIN documents ON users.id = documents.user_id 
       WHERE users.id = $1
+      `, [user.id]);
+    if (userData.length === 0 ) throw new BadRequest('User not found.');
+    const userDocumentQuery = await ClientDataSource.query(`
+      SELECT url AS document_url, doc_type, direction
+      FROM documents 
+      WHERE user_id = $1
       `, [user.id])
-      return new ResponseLib(req, res).json({ 
+      userData[0].documents = userDocumentQuery || []
+    return new ResponseLib(req, res).json({ 
       success: true,
       message: "Profile fetched successfully.",
-      data: firstUser
+      data: userData[0]
     })
     
   } catch (error) {
