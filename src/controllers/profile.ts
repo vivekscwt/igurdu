@@ -16,7 +16,7 @@ export const me = async (req: express.Request, res: express.Response, next: expr
       }
     })
     if (!profile) throw new BadRequest('User not found.');
-
+    
     return new ResponseLib(req, res).json({ 
       success: true,
       message: "Profile fetched successfully.",

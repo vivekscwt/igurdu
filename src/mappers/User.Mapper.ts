@@ -8,6 +8,7 @@ export default class UserMapper {
       first_name: user.first_name,
       last_name: user.last_name,
       phone: user.phone,
+      country_code: user.country_code,
       status: user.status,
       role: user.role,
       picture: user.profile_picture
