@@ -5,10 +5,42 @@ import { User } from '../db/entities/User.entity';
 import { BadRequest } from '../libs/Error.Lib';
 import UserMapper from '../mappers/User.Mapper';
 import { IRequestQuery } from '../interfaces/requests/request.interface';
+import { QueryBuilder  } from 'typeorm';
+import { ClientDataSource } from '../db/datasource.config';
+
 
 export const me = async (req: express.Request, res: express.Response, next: express.NextFunction) => { 
   try {
-    const user = req.user;
+    const user = req.user; 
+    const firstUser = await ClientDataSource.query(`
+      SELECT 
+      users.id,
+      email,
+      first_name,
+      last_name,
+      phone,
+      country_code,
+      status,
+      role,
+      documents.url AS document_url
+      FROM users 
+      LEFT JOIN documents ON users.id = documents.user_id 
+      WHERE users.id = $1
+      `, [user.id])
+      return new ResponseLib(req, res).json({ 
+      success: true,
+      message: "Profile fetched successfully.",
+      data: firstUser
+    })
+    
+  } catch (error) {
+    next(error)
+  }
+}
+/* 
+export const me = async (req: express.Request, res: express.Response, next: express.NextFunction) => { 
+  try {
+    const user = req.user; 
     const profile = await new DBAdapter().findOne(User, {
       where: {
         id: user.id,
@@ -16,7 +48,6 @@ export const me = async (req: express.Request, res: express.Response, next: expr
       }
     })
     if (!profile) throw new BadRequest('User not found.');
-    
     return new ResponseLib(req, res).json({ 
       success: true,
       message: "Profile fetched successfully.",
@@ -26,7 +57,7 @@ export const me = async (req: express.Request, res: express.Response, next: expr
     next(error)
   }
 }
-
+ */
 export const updateAccountStatus = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const { id } = req.params;

@@ -114,11 +114,11 @@ export const updateProfile = async (req: express.Request, res: express.Response,
     }
     if (documents) {
       const data = documents?.map((d: any) => {
-        return  {
+        return {
           user_id: user.id,
-          doc_type: documents.doc_type,
-          direction: documents.direction,
-          url: documents.url,
+          doc_type: d.doc_type,
+          direction: d.direction,
+          url: d.url,
         }
       })
       await db.insert(Documents, data)
@@ -128,7 +128,7 @@ export const updateProfile = async (req: express.Request, res: express.Response,
       await db.update(User, { id: user.id }, {
         first_name: personalDetails.first_name,
         last_name: personalDetails.last_name,
-        description : personalDetails.description
+        description: personalDetails.description
       });
     }
 
