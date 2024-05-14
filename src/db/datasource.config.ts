@@ -16,8 +16,9 @@ export const ClientDataSource = new DataSource({
   subscribers: [],
   migrations: [__dirname + '/migrations/*{.ts,.js}'],
   maxQueryExecutionTime: 2_000,
-  ssl: {
-    ca: fs.readFileSync(path.join(__dirname,'ca-certificate.crt'))
-  }
+  // ssl: {
+  //   ca: fs.readFileSync(path.join(__dirname,'ca-certificate.crt'))
+  // }
   // legacySpatialSupport: false
+  ssl : false
 });

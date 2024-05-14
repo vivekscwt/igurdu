@@ -22,6 +22,7 @@ export default class ProfileMapper {
       first_name: profile.user?.first_name,
       last_name: profile.user?.last_name,
       phone: profile.user?.phone,
+      country_code: profile.user?.country_code,
       status: profile.user?.status,
       role: profile.user?.role,
       description: profile.user?.description,
