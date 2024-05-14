@@ -1,7 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { STATUSES, USER_ROLES } from '../../config';
 import { Base } from './Base.entity';
 import { MediaFile } from './MediaFile.entity';
+import { Documents } from './Document.entity';
 
 @Entity('users')
 export class User {
@@ -44,4 +45,7 @@ export class User {
 
   @Column(() => Base, { prefix: false })
   'meta': Base;
+
+  @OneToMany(() => Documents, document => document.user)
+  'documents': Document[];
 }

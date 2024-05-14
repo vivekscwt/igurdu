@@ -1,7 +1,7 @@
 import { celebrate, Joi, Segments } from 'celebrate';
 import { Router } from 'express';
 import { registerGuard } from '../../controllers/guard/auth';
-import { getProfile, updateProfile } from '../../controllers/guard/profile';
+import { getProfile, updateProfile, updateProfilePicture } from '../../controllers/guard/profile';
 
 const routes = Router();
 
@@ -12,7 +12,7 @@ routes.patch(
   '/',
   celebrate({
     [Segments.BODY]: Joi.object({
-      personalDetails : Joi.object({
+      personalDetails: Joi.object({
         first_name: Joi.string().optional(),
         last_name: Joi.string().optional(),
         description: Joi.string().optional(),
@@ -34,7 +34,7 @@ routes.patch(
         lng: Joi.number(),
         max_distance: Joi.number(),
       }).optional(),
-      siaNumber:  Joi.string().pattern(/^\d+$/).length(16),
+      siaNumber: Joi.string().pattern(/^\d+$/).length(16),
       expiryDateFrom: Joi.date(),
       expiryDateTo: Joi.date(),
       licenseSector: Joi.string(),
@@ -44,5 +44,7 @@ routes.patch(
   }),
   updateProfile
 )
+
+routes.post('/update-profille-image', updateProfilePicture)
 
 export default routes;

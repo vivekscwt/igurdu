@@ -10,7 +10,7 @@ import { ProfessionDetail } from '../../db/entities/ProfessionalDetail.entity';
 import { Location } from '../../db/entities/Location.entity';
 import { Documents } from '../../db/entities/Document.entity';
 import ProfileMapper from '../../mappers/Profile.Mapper';
-
+import { ClientDataSource } from '../../db/datasource.config';
 // get profile
 
 export const getProfile = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -137,6 +137,35 @@ export const updateProfile = async (req: express.Request, res: express.Response,
       message: "Profile updated successfully.",
       data: ProfileMapper.toDTO(profile! || updated_profile)
     })
+  } catch (error) {
+    next(error)
+  }
+}
+
+// Update Profile Picture 
+export const updateProfilePicture = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  try {
+    const { url, name } = req.body;
+    const user = req.user;
+    const haveProfilePicQuery = await ClientDataSource.query(`SELECT name FROM media_files WHERE user_id = $1 AND name = $2`, [user.id, 'profile_pic']);
+    console.log("haveProfilePic", haveProfilePicQuery);
+    if (haveProfilePicQuery.length === 0) {
+      const insertProfilePicQuery = await ClientDataSource.query(
+        `INSERT INTO media_files (user_id, name, url, object_key ) VALUES ($1, $2, $3, $4)`,
+        [user.id, name, url, name]
+      );
+      return new ResponseLib(req, res).json({
+        success: true,
+        message: "Profile picture uploaded successfully."
+      })
+    } else {
+      const updateProfilePicQuery = await ClientDataSource.query(`UPDATE media_files SET url = $1 WHERE user_id = $2 AND object_key = $3`, [url, user.id, 'profile_pic']);
+      return new ResponseLib(req, res).json({
+        success: true,
+        message: "Profile picture updated successfully."
+      })
+    }
+    res.end()
   } catch (error) {
     next(error)
   }
