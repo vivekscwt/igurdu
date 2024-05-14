@@ -25,8 +25,8 @@ export const me = async (req: express.Request, res: express.Response, next: expr
       media_files.url AS profile_image
       FROM users 
       LEFT JOIN media_files ON users.id = media_files.user_id
-      WHERE users.id = $1
-      `, [user.id]);
+      WHERE users.id = $1  AND media_files.object_key = $2
+      `, [user.id, 'profile_pic']);
     if (userData.length === 0 ) throw new BadRequest('User not found.');
     const userDocumentQuery = await ClientDataSource.query(`
       SELECT url AS document_url, doc_type, direction
