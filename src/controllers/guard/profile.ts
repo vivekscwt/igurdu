@@ -148,9 +148,8 @@ export const updateProfilePicture = async (req: express.Request, res: express.Re
     const { url, name } = req.body;
     const user = req.user;
     const haveProfilePicQuery = await ClientDataSource.query(`SELECT name FROM media_files WHERE user_id = $1 AND name = $2`, [user.id, 'profile_pic']);
-    console.log("haveProfilePic", haveProfilePicQuery);
     if (haveProfilePicQuery.length === 0) {
-      const insertProfilePicQuery = await ClientDataSource.query(
+          await ClientDataSource.query(
         `INSERT INTO media_files (user_id, name, url, object_key ) VALUES ($1, $2, $3, $4)`,
         [user.id, name, url, name]
       );
@@ -165,7 +164,6 @@ export const updateProfilePicture = async (req: express.Request, res: express.Re
         message: "Profile picture updated successfully."
       })
     }
-    res.end()
   } catch (error) {
     next(error)
   }

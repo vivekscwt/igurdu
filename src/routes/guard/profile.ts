@@ -45,6 +45,9 @@ routes.patch(
   updateProfile
 )
 
-routes.post('/update-profille-image', updateProfilePicture)
+routes.post('/update-profille-image', celebrate({[Segments.BODY]: Joi.object({
+  url: Joi.string(),
+  name: Joi.string(),
+})}), updateProfilePicture)
 
 export default routes;
