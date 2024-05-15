@@ -1,6 +1,6 @@
 import { celebrate, Joi, Segments } from 'celebrate';
 import { Router } from 'express';
-import { login, verifyUser } from '../controllers/auth';
+import { login, verifyUser, getResetPasswordLink, resetPassword } from '../controllers/auth';
 import { IAuthLoginRequest } from '../interfaces/requests/auth.request.interface';
 import { authorizeAdmin, authorizeRequest } from '../middlewares/authorization';
 import { deleteUser, me, updateAccountStatus } from '../controllers/profile';
@@ -17,6 +17,10 @@ routes.post(
   }),
   login
 )
+
+// Reset password Link generation
+routes.post('/forget-password', getResetPasswordLink)
+
 
 routes.use(authorizeRequest);
 routes.get('/me', me);
@@ -44,8 +48,8 @@ routes.delete('/user/:id/delete',
     })
   }),
   deleteUser)
-
-
+//Reset password 
+routes.post('/reset-password', resetPassword)
 
 
 export default routes;

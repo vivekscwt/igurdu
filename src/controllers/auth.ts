@@ -46,6 +46,7 @@ export const login = async (req: express.Request, res: express.Response, next: e
     next(error)
   }
 }
+
 export const register = async  (req: express.Request, res: express.Response, next: express.NextFunction) => { 
   try {
     const {
@@ -94,10 +95,13 @@ export const getResetPasswordLink = async  (req: express.Request, res: express.R
     const { email } = req.body;
     const auth = new AuthService()
     const user = await auth.findUserByEmail(email).catch(LoggerLib.error);
-
+    
     if (user) {
-      const token = await auth.generateUserToken(user, '3d')
-      new EmailService(user).send('{ token }').catch(LoggerLib.error);
+      const token = await auth.generateUserToken(user, '1d')
+      const address = process.env.NODE_ENV == 'local' ? process.env.LOCAL_CLIENT : process.env.PROD_CLIENT
+      const resetPasswordLink = `${address}/reset-password?token=${token}`;
+      new EmailService(user).send({ subject: 'Reset Password',
+      html: `Hello ${user.first_name}, <br/>Click on the following link to reset your password: <a href="${resetPasswordLink}">${resetPasswordLink}</a> <br> Link will expire in 1 days`, }).catch(LoggerLib.error);
     }
 
     return new ResponseLib(req, res).status(201).json({
