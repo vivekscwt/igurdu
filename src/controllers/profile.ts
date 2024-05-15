@@ -14,24 +14,23 @@ export const me = async (req: express.Request, res: express.Response, next: expr
     const user = req.user; 
     const userData = await ClientDataSource.query(`
     SELECT 
-        users.id,
-        email,
-        first_name,
-        last_name,
-        phone,
-        country_code,
-        status,
-        role,
-        media_files.url AS profile_image
+    u.id,
+    u.email,
+    u.first_name,
+    u.last_name,
+    u.phone,
+    u.country_code,
+    u.status,
+    u.role,
+    m.url AS profile_image
     FROM 
-        users 
+        users u
     LEFT JOIN 
-        media_files ON users.id = media_files.user_id
+        (SELECT user_id, url FROM media_files WHERE object_key = 'profile_pic') m 
+        ON u.id = m.user_id
     WHERE 
-        (users.id = $1 AND media_files.object_key = $2)
-        OR 
-        media_files.url IS NULL
-      `, [user.id, 'profile_pic']);
+        u.id = $1
+      `, [user.id]);
     if (userData.length === 0 ) throw new BadRequest('User not found.');
     const userDocumentQuery = await ClientDataSource.query(`
       SELECT url AS document_url, doc_type, direction
