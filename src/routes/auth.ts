@@ -24,7 +24,8 @@ routes.post('/forget-password', getResetPasswordLink)
 
 routes.use(authorizeRequest);
 routes.get('/me', me);
-
+//Reset password 
+routes.post('/reset-password', resetPassword)
 routes.post('/verify', verifyUser);
 
 routes.use(authorizeAdmin);
@@ -48,8 +49,7 @@ routes.delete('/user/:id/delete',
     })
   }),
   deleteUser)
-//Reset password 
-routes.post('/reset-password', resetPassword)
+
 
 
 export default routes;

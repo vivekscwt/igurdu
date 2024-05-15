@@ -13,19 +13,24 @@ export const me = async (req: express.Request, res: express.Response, next: expr
   try {
     const user = req.user; 
     const userData = await ClientDataSource.query(`
-      SELECT 
-      users.id,
-      email,
-      first_name,
-      last_name,
-      phone,
-      country_code,
-      status,
-      role,
-      media_files.url AS profile_image
-      FROM users 
-      LEFT JOIN media_files ON users.id = media_files.user_id
-      WHERE users.id = $1  AND media_files.object_key = $2
+    SELECT 
+        users.id,
+        email,
+        first_name,
+        last_name,
+        phone,
+        country_code,
+        status,
+        role,
+        media_files.url AS profile_image
+    FROM 
+        users 
+    LEFT JOIN 
+        media_files ON users.id = media_files.user_id
+    WHERE 
+        (users.id = $1 AND media_files.object_key = $2)
+        OR 
+        media_files.url IS NULL
       `, [user.id, 'profile_pic']);
     if (userData.length === 0 ) throw new BadRequest('User not found.');
     const userDocumentQuery = await ClientDataSource.query(`
