@@ -128,7 +128,9 @@ export const updateProfile = async (req: express.Request, res: express.Response,
       await db.update(User, { id: user.id }, {
         first_name: personalDetails.first_name,
         last_name: personalDetails.last_name,
-        description: personalDetails.description
+        description: personalDetails.description,
+        phone: personalDetails.phone,
+        country_code: personalDetails.country_code
       });
     }
 
