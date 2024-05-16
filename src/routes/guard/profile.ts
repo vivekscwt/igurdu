@@ -16,6 +16,8 @@ routes.patch(
         first_name: Joi.string().optional(),
         last_name: Joi.string().optional(),
         description: Joi.string().optional(),
+        phone: Joi.string().optional(),
+        country_code: Joi.string().optional(),
       }).optional(),
       email: Joi.string().email().optional(),
       password: Joi.string().optional(),
